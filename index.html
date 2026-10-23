@@ -1,0 +1,83 @@
+!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لعنة الغابة</title>
+<style>
+body{margin:0;background:#07110b;color:white;font-family:Arial;text-align:center}
+#game{height:100vh;position:relative;overflow:hidden;background:linear-gradient(#07100e,#25472b,#030604)}
+h1{color:#b8e6a3}
+#forest{font-size:60px;line-height:1.7}
+#hero{font-size:55px;position:absolute;bottom:24%;left:45%}
+#monster{font-size:65px;position:absolute;top:35%;left:12%}
+#story{font-size:19px;padding:12px}
+button{background:#234b30;color:white;border:2px solid #9fca9c;border-radius:12px;padding:13px;margin:5px;font-size:17px}
+#start{position:absolute;inset:0;background:#020703ed;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+#controls{position:absolute;bottom:15px;width:100%}
+</style>
+</head>
+<body>
+<div id="game">
+<h1>🌲 لعنة الغابة 🌲</h1>
+<div id="story">أنت عالق في غابة مظلمة!</div>
+<div id="forest">🌲 🌳 🌲 🌳 🌲<br>🌳 🌲 🌳 🌲 🌳</div>
+<div id="hero">🚶🏻</div>
+<div id="monster">👹</div>
+<div id="controls">
+<button onclick="move(-1)">يسار ◀</button>
+<button onclick="move(1)">يمين ▶</button>
+<button onclick="run()">🏃 تقدم</button>
+<button onclick="flash()">🔦 الكشاف</button>
+</div>
+<div id="start">
+<h1>لعنة الغابة</h1>
+<p>أحمد وفهد ضاعا في غابة يسكنها وحش مخيف!</p>
+<p>تحرك وابحث عن المخرج قبل أن يمسك بك الوحش.</p>
+<button onclick="begin()">ابدأ اللعب</button>
+</div>
+</div>
+<script>
+let x=45,progress=0,monster=5,started=false,light=true;
+function begin(){
+started=true;
+document.getElementById('start').style.display='none';
+document.getElementById('story').textContent='أحمد: لازم نلقى المخرج!';
+}
+function move(d){
+if(!started)return;
+x=Math.max(5,Math.min(85,x+d*10));
+document.getElementById('hero').style.left=x+'%';
+progress+=3;
+chase();
+}
+function run(){
+if(!started)return;
+progress+=10;
+chase();
+}
+function chase(){
+monster+=8;
+document.getElementById('monster').style.left=Math.min(75,monster)+'%';
+if(progress>=100){
+document.getElementById('story').textContent='🏆 نجوت! وصلت إلى مخرج الغابة!';
+started=false;
+}else if(monster>=65){
+document.getElementById('story').textContent='👹 أمسك بك الوحش! حدّث الصفحة لتعيد اللعب.';
+started=false;
+}else if(progress>40){
+document.getElementById('story').textContent='فهد: اركض! الوحش يقترب!';
+}else{
+document.getElementById('story').textContent='التقدم نحو المخرج: '+progress+'%';
+}
+}
+function flash(){
+if(!started)return;
+light=!light;
+document.getElementById('game').style.filter=light?'brightness(1)':'brightness(.3)';
+document.getElementById('story').textContent=light?'🔦 الكشاف يعمل':'الظلام يحيط بك!';
+}
+</script>
+</div>
+</body>
+</html>
